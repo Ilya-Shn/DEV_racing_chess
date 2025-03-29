@@ -112,8 +112,16 @@ bool Game::makeMove(uint32_t piece_id, Position target) {
         return false;
     }
 
+    if (isCastlingMove(*piece_opt, target)) {
+        handleCastling(piece_id, target);
+        return true;
+    }
+
     // Выполняем ход
     if (board_.movePiece(piece_id, target)) {
+        // Проверяем и выполняем превращение пешки, если необходимо
+        checkPawnPromotion(piece_id, target);
+
         // Получаем фигуру после перемещения и применяем кулдаун
         applyCooldown(piece_id);
 
@@ -126,6 +134,98 @@ bool Game::makeMove(uint32_t piece_id, Position target) {
     return false;
 }
 
+// Новый метод для проверки и выполнения превращения пешки
+void Game::checkPawnPromotion(uint32_t piece_id, Position target) {
+    auto piece_opt = board_.getPieceById(piece_id);
+    if (!piece_opt || piece_opt->type != PieceType::PAWN) {
+        return;
+    }
+
+    // Проверяем, достигла ли пешка последней горизонтали
+    bool is_last_rank = (piece_opt->color == PlayerColor::WHITE && target.row == 7) ||
+                        (piece_opt->color == PlayerColor::BLACK && target.row == 0);
+
+    if (is_last_rank) {
+        // Превращаем пешку в ферзя
+        board_.promotePawn(piece_id, PieceType::QUEEN);
+        std::cout << "DEBUG: Пешка превращена в ферзя" << std::endl;
+    }
+}
+
+// В файле game.cpp добавить реализацию методов
+
+// Проверяет, является ли движение короля рокировкой
+bool Game::isCastlingMove(const Piece& king, Position target) const {
+    // Проверяем, что король не ходил (для стандартной рокировки)
+    if (king.moved) {
+        return false;
+    }
+
+    // Проверяем, что король двигается на две клетки по горизонтали
+    int col_diff = std::abs(target.col - king.position.col);
+    return col_diff == 2 && king.position.row == target.row;
+}
+
+// Обрабатывает рокировку
+bool Game::handleCastling(uint32_t king_id, Position target) {
+    auto king_opt = board_.getPieceById(king_id);
+    if (!king_opt || king_opt->moved) {
+        return false;
+    }
+
+    const Piece& king = king_opt.value();
+
+    // Проверяем, является ли это движение рокировкой
+    if (!isCastlingMove(king, target)) {
+        return false;
+    }
+
+    // Определяем направление рокировки (влево или вправо)
+    bool is_kingside = target.col > king.position.col;
+    int rook_col = is_kingside ? 7 : 0;
+
+    // Находим ладью
+    Position rook_pos = {king.position.row, rook_col};
+    auto rook_opt = board_.getPieceAt(rook_pos);
+
+    if (!rook_opt || rook_opt->type != PieceType::ROOK ||
+        rook_opt->color != king.color || rook_opt->moved) {
+        return false;
+    }
+
+    // Проверяем, свободен ли путь для рокировки
+    int step = is_kingside ? 1 : -1;
+    for (int col = king.position.col + step; col != rook_col; col += step) {
+        Position pos = {king.position.row, col};
+        if (board_.getPieceAt(pos)) {
+            return false;
+        }
+    }
+
+    // Выполняем рокировку (перемещаем короля и ладью)
+    uint32_t rook_id = rook_opt->id;
+    Position rook_target = {king.position.row, king.position.col + step};
+
+    // Перемещаем короля
+    if (!board_.movePiece(king_id, target)) {
+        return false;
+    }
+
+    // Перемещаем ладью
+    if (!board_.movePiece(rook_id, rook_target)) {
+        // Если не удалось переместить ладью, возвращаем короля назад
+        board_.movePiece(king_id, king.position);
+        return false;
+    }
+
+    // Применяем кулдаун к обеим фигурам
+    applyCooldown(king_id);
+    applyCooldown(rook_id);
+
+    std::cout << "DEBUG: Выполнена рокировка " << (is_kingside ? "на королевский фланг" : "на ферзевый фланг") << std::endl;
+    return true;
+}
+
 std::vector<Position> Game::getValidMoves(uint32_t piece_id) const {
     return validator_.getValidMoves(board_, piece_id);
 }
@@ -133,7 +233,6 @@ std::vector<Position> Game::getValidMoves(uint32_t piece_id) const {
 void Game::tick() {
     static int tick_counter = 0;
     tick_counter++;
-    std::cout << "DEBUG: Game tick " << tick_counter << std::endl;
 
     // Уменьшаем кулдауны
     board_.decrementCooldowns();

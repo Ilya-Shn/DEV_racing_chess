@@ -30,6 +30,10 @@ private:
     void updateGameState();
     void applyCooldown(uint32_t piece_id); // ИСПРАВЛЕНО: Принимаем piece_id
 
+    void checkPawnPromotion(uint32_t piece_id, Position target);
+    bool handleCastling(uint32_t king_id, Position target);
+    bool isCastlingMove(const Piece& king, Position target) const;
+
     Board board_;
     MoveValidator validator_;
     Timer timer_;

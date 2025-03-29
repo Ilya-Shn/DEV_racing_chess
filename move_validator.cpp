@@ -144,12 +144,45 @@ bool MoveValidator::isValidQueenMove(const Board& board, const Piece& piece, Pos
     return isValidRookMove(board, piece, target) || isValidBishopMove(board, piece, target);
 }
 
+// В файле move_validator.cpp обновить метод isValidKingMove
+
 bool MoveValidator::isValidKingMove(const Board& board, const Piece& piece, Position target) const {
     int row_diff = std::abs(target.row - piece.position.row);
     int col_diff = std::abs(target.col - piece.position.col);
 
-    // Король ходит на одну клетку в любом направлении
-    return row_diff <= 1 && col_diff <= 1;
+    // Стандартный ход короля - на одну клетку в любом направлении
+    if (row_diff <= 1 && col_diff <= 1) {
+        return true;
+    }
+
+    // Проверка на рокировку
+    if (!piece.moved && row_diff == 0 && col_diff == 2) {
+        // Определяем направление рокировки
+        bool is_kingside = target.col > piece.position.col;
+        int rook_col = is_kingside ? 7 : 0;
+
+        // Проверяем наличие ладьи на нужной позиции
+        Position rook_pos = {piece.position.row, rook_col};
+        auto rook_opt = board.getPieceAt(rook_pos);
+
+        if (!rook_opt || rook_opt->type != PieceType::ROOK ||
+            rook_opt->color != piece.color || rook_opt->moved) {
+            return false;
+        }
+
+        // Проверяем, свободен ли путь между королем и ладьей
+        int step = is_kingside ? 1 : -1;
+        for (int col = piece.position.col + step; col != rook_col; col += step) {
+            Position pos = {piece.position.row, col};
+            if (board.getPieceAt(pos)) {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    return false;
 }
 
 bool MoveValidator::isPathClear(const Board& board, Position from, Position to) const {

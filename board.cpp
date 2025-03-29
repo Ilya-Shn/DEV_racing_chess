@@ -255,3 +255,20 @@ int Board::countKings(PlayerColor color) const {
     }
     return count;
 }
+
+// В файле board.cpp добавить реализацию метода
+bool Board::promotePawn(uint32_t id, PieceType new_type) {
+    auto it = pieces_.find(id);
+    if (it == pieces_.end() || it->second.captured) {
+        return false;
+    }
+
+    // Проверяем, что это пешка
+    if (it->second.type != PieceType::PAWN) {
+        return false;
+    }
+
+    // Превращаем пешку в указанный тип фигуры
+    it->second.type = new_type;
+    return true;
+}

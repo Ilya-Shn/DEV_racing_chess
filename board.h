@@ -27,6 +27,8 @@ public:
     void decrementCooldowns();
     int countKings(PlayerColor color) const;
 
+    bool promotePawn(uint32_t id, PieceType new_type);
+
 private:
     std::map<uint32_t, Piece> pieces_;
     uint32_t next_id_;
