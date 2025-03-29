@@ -1,0 +1,35 @@
+# Общие настройки
+*.log
+*.tmp
+*.swp
+*.swo
+*.bak
+*.old
+
+# Файлы и каталоги, создаваемые IDE
+.idea/
+.vscode/
+*.iml
+
+# Файлы и каталоги, создаваемые компилятором
+*.o
+*.obj
+*.so
+*.a
+*.lib
+*.dll
+*.exe
+*.out
+
+# Каталоги сборки
+build/
+cmake-build-*/
+
+# Файлы конфигурации CMake
+CMakeCache.txt
+CMakeFiles/
+cmake_install.cmake
+Makefile
+
+# Файлы и каталоги, создаваемые CLion
+.clion/
