@@ -2,6 +2,9 @@
 #include "fen_parser.h"
 #include <iostream>
 #include <cmath>
+#include <sstream>
+#include <iomanip>
+
 
 GameUI::GameUI(Game& game, bool against_ai, unsigned width, unsigned height)
         : window_(sf::VideoMode(width, height), "Speed Chess"),
@@ -371,7 +374,9 @@ void GameUI::drawPieceWithCooldown(const Piece& piece) {
             window_.draw(cooldown_shape);
 
             // Отображаем числовой счетчик кулдауна
-            sf::Text cooldown_text(std::to_string(piece.cooldown_ticks_remaining), font_, 20); // Увеличен размер текста
+            std::ostringstream ss;
+            ss << std::fixed << std::setprecision(1) << static_cast<float>(piece.cooldown_ticks_remaining)/10.0;
+            sf::Text cooldown_text(ss.str(), font_, 20); // Увеличен размер текста
             cooldown_text.setFillColor(sf::Color::White);
             cooldown_text.setOutlineColor(sf::Color::Black);
             cooldown_text.setOutlineThickness(1.0f); // Добавлена обводка для лучшей читаемости

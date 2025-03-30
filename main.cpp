@@ -9,9 +9,7 @@
 int main() {
     // Настройки по умолчанию
     GameSettings settings;
-    settings.white_cooldown_ticks = 10;
-    settings.black_cooldown_ticks = 10;
-    settings.tick_rate_ms = 100;
+    settings.tick_rate_ms = 100; // Устанавливаем стандартный тик в 100мс (0.1 секунды)
     settings.against_ai = false;
     settings.fen_string = FENParser::getDefaultFEN();
 
@@ -47,15 +45,17 @@ int main() {
         }
     }
 
-    // Ввод кулдаунов
-    std::cout << "\nEnter cooldown for White pieces (in ticks, 1 tick = 0.1s): ";
-    std::cin >> settings.white_cooldown_ticks;
+    // Ввод кулдаунов в секундах (вместо тиков)
+    double white_cooldown_seconds;
+    std::cout << "\nEnter cooldown for White pieces (in seconds): ";
+    std::cin >> white_cooldown_seconds;
+    // Конвертируем секунды в тики (1 тик = 0.1 сек)
+    settings.white_cooldown_ticks = static_cast<int>(white_cooldown_seconds * 10);
 
-    std::cout << "Enter cooldown for Black pieces (in ticks, 1 tick = 0.1s): ";
-    std::cin >> settings.black_cooldown_ticks;
-
-    std::cout << "\nEnter tick rate in milliseconds (100-1000, default 100): ";
-    std::cin >> settings.tick_rate_ms;
+    double black_cooldown_seconds;
+    std::cout << "Enter cooldown for Black pieces (in seconds): ";
+    std::cin >> black_cooldown_seconds;
+    settings.black_cooldown_ticks = static_cast<int>(black_cooldown_seconds * 10);
 
     // Ввод начальной позиции
     std::cout << "\nSelect initial position:" << std::endl;
