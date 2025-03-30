@@ -28,7 +28,7 @@ private:
     void tick();
     void checkGameOver();
     void updateGameState();
-    void applyCooldown(uint32_t piece_id); // ИСПРАВЛЕНО: Принимаем piece_id
+    void applyCooldown(uint32_t piece_id);
 
     void checkPawnPromotion(uint32_t piece_id, Position target);
     bool handleCastling(uint32_t king_id, Position target);

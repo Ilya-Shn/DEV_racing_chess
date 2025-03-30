@@ -18,7 +18,6 @@ public:
     bool capturePiece(uint32_t id);
     void capturePieceAt(Position pos);
 
-    // ДОБАВЛЕНО: метод для установки cooldown фигуры
     bool setPieceCooldown(uint32_t id, int cooldown);
 
     std::vector<Piece> getAllPieces(bool include_captured = false) const;

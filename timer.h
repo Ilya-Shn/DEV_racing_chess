@@ -20,3 +20,4 @@ private:
     std::atomic<bool> running_;
     std::thread timer_thread_;
 };
+

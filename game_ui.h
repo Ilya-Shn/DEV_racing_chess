@@ -20,18 +20,15 @@ private:
     std::unique_ptr<AIPlayer> ai_player_;
     bool against_ai_;
 
-    // UI элементы
     sf::Font font_;
     std::map<std::string, sf::Texture> textures_;
 
-    // Выбранная фигура
     std::optional<uint32_t> selected_piece_id_;
     Position selected_piece_position_;
     bool is_dragging_;
     int mouse_x_, mouse_y_;
     int drag_offset_x_, drag_offset_y_;
 
-    // Параметры доски
     int board_size_;
     int board_offset_x_;
     int board_offset_y_;
@@ -41,31 +38,26 @@ private:
     sf::Color highlight_color_;
     sf::Color cooldown_color_;
 
-    // Методы UI
     void loadResources();
     void handleEvents();
     void update();
     void render();
 
-    // Обработчики разных состояний
     void handleGameScreen();
     void handleGameOverScreen();
 
-    // Вспомогательные методы для UI
     void drawBoard();
     void drawPieces();
     void drawCooldowns();
     void drawPieceWithCooldown(const Piece& piece);
     void drawPauseScreen();
 
-    // Обработка ввода
     Position boardPositionFromMouse(sf::Vector2i mouse_pos);
     void handleKeyPress(sf::Keyboard::Key key);
     void handleMouseButtonPressed(int x, int y);
     void handleMouseButtonReleased(int x, int y);
     void handleMouseMoved(int x, int y);
 
-    // Вспомогательные методы
     std::string getPieceKey(PieceType type, PlayerColor color);
     void setupBoard();
 };

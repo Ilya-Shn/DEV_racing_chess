@@ -4,16 +4,13 @@
 #include <algorithm>
 
 Board::Board() : next_id_(1) {
-    // Конструктор
 }
 
 void Board::setupStandardPosition() {
     pieces_.clear();
     next_id_ = 1;
 
-    // Расстановка пешек
     for (int col = 0; col < 8; col++) {
-        // Белые пешки
         Piece pawn;
         pawn.id = next_id_++;
         pawn.type = PieceType::PAWN;
@@ -25,7 +22,6 @@ void Board::setupStandardPosition() {
         pieces_[pawn.id] = pawn;
     }
 
-    // Расстановка тяжелых фигур (белые)
     PieceType white_pieces[8] = {
             PieceType::ROOK, PieceType::KNIGHT, PieceType::BISHOP, PieceType::QUEEN,
             PieceType::KING, PieceType::BISHOP, PieceType::KNIGHT, PieceType::ROOK
@@ -43,7 +39,6 @@ void Board::setupStandardPosition() {
         pieces_[piece.id] = piece;
     }
 
-    // Черные пешки
     for (int col = 0; col < 8; col++) {
         Piece pawn;
         pawn.id = next_id_++;
@@ -56,7 +51,6 @@ void Board::setupStandardPosition() {
         pieces_[pawn.id] = pawn;
     }
 
-    // Расстановка тяжелых фигур (черные)
     PieceType black_pieces[8] = {
             PieceType::ROOK, PieceType::KNIGHT, PieceType::BISHOP, PieceType::QUEEN,
             PieceType::KING, PieceType::BISHOP, PieceType::KNIGHT, PieceType::ROOK
@@ -82,7 +76,6 @@ bool Board::setupFromFEN(const std::string& fen) {
     int row = 7;
     int col = 0;
 
-    // Разбор первой части FEN (расстановка фигур)
     std::string::size_type pos = fen.find(' ');
     std::string board_part = (pos != std::string::npos) ? fen.substr(0, pos) : fen;
 
@@ -90,14 +83,14 @@ bool Board::setupFromFEN(const std::string& fen) {
         if (ch == '/') {
             row--;
             col = 0;
-            if (row < 0) return false;  // Слишком много строк
+            if (row < 0) return false;
         }
         else if (isdigit(ch)) {
-            col += (ch - '0');  // Пропустить указанное количество клеток
-            if (col > 8) return false;  // Строка слишком длинная
+            col += (ch - '0');
+            if (col > 8) return false;
         }
         else {
-            if (col >= 8) return false;  // Строка слишком длинная
+            if (col >= 8) return false;
 
             Piece piece;
             piece.id = next_id_++;
@@ -119,7 +112,7 @@ bool Board::setupFromFEN(const std::string& fen) {
                 case 'r': piece.type = PieceType::ROOK; piece.color = PlayerColor::BLACK; break;
                 case 'q': piece.type = PieceType::QUEEN; piece.color = PlayerColor::BLACK; break;
                 case 'k': piece.type = PieceType::KING; piece.color = PlayerColor::BLACK; break;
-                default: return false;  // Недопустимый символ
+                default: return false;
             }
 
             pieces_[piece.id] = piece;
@@ -127,7 +120,6 @@ bool Board::setupFromFEN(const std::string& fen) {
         }
     }
 
-    // Проверка на наличие королей обоих цветов
     if (countKings(PlayerColor::WHITE) != 1 || countKings(PlayerColor::BLACK) != 1) {
         return false;
     }
@@ -158,16 +150,13 @@ bool Board::movePiece(uint32_t id, Position to) {
         return false;
     }
 
-    // Запоминаем старую позицию для обработки
     Position old_pos = it->second.position;
 
-    // Если на целевой клетке есть фигура другого цвета, захватываем ее
     auto target_piece = getPieceAt(to);
     if (target_piece && target_piece->color != it->second.color) {
         capturePieceAt(to);
     }
 
-    // Перемещаем фигуру
     it->second.position = to;
     it->second.moved = true;
 
@@ -193,7 +182,6 @@ void Board::capturePieceAt(Position pos) {
     }
 }
 
-// ДОБАВЛЕНО: Метод для установки cooldown фигуры
 bool Board::setPieceCooldown(uint32_t id, int cooldown) {
     auto it = pieces_.find(id);
     if (it == pieces_.end() || it->second.captured) {
@@ -201,7 +189,6 @@ bool Board::setPieceCooldown(uint32_t id, int cooldown) {
     }
 
     it->second.cooldown_ticks_remaining = cooldown;
-    std::cout << "DEBUG: Установлен cooldown " << cooldown << " на фигуру ID " << id << std::endl;
     return true;
 }
 
@@ -233,16 +220,11 @@ std::vector<Piece> Board::getPlayerPieces(PlayerColor color, bool include_captur
 void Board::decrementCooldowns() {
     int updated = 0;
 
-    // ИСПРАВЛЕНО: Корректное уменьшение кулдауна каждой фигуры
     for (auto& [id, piece] : pieces_) {
         if (piece.cooldown_ticks_remaining > 0) {
             piece.cooldown_ticks_remaining--;
             updated++;
         }
-    }
-
-    if (updated > 0) {
-        std::cout << "DEBUG: Уменьшен cooldown для " << updated << " фигур" << std::endl;
     }
 }
 
@@ -256,19 +238,16 @@ int Board::countKings(PlayerColor color) const {
     return count;
 }
 
-// В файле board.cpp добавить реализацию метода
 bool Board::promotePawn(uint32_t id, PieceType new_type) {
     auto it = pieces_.find(id);
     if (it == pieces_.end() || it->second.captured) {
         return false;
     }
 
-    // Проверяем, что это пешка
     if (it->second.type != PieceType::PAWN) {
         return false;
     }
 
-    // Превращаем пешку в указанный тип фигуры
     it->second.type = new_type;
     return true;
 }

@@ -21,7 +21,6 @@ GameUI::GameUI(Game& game, bool against_ai, unsigned width, unsigned height)
     // Создаем AI, если нужно
     if (against_ai_) {
         ai_player_ = std::make_unique<AIPlayer>(AIDifficulty::MEDIUM, PlayerColor::BLACK);
-        std::cout << "DEBUG: AI создан с цветом BLACK" << std::endl;
     }
 
     // Загрузка ресурсов и настройка доски
@@ -156,7 +155,7 @@ void GameUI::update() {
                 delay = 0.7f;  // Быстрее (0.7 сек)
                 break;
             case AIDifficulty::EXPERT:
-                delay = 0.4f;  // Самый быстрый (0.4 сек)
+                delay = 0.4f;  // Самый быст��ый (0.4 сек)
                 break;
             default:
                 delay = 1.0f;
@@ -164,13 +163,9 @@ void GameUI::update() {
         }
 
         if (ai_clock.getElapsedTime().asSeconds() >= delay) {
-            std::cout << "DEBUG: AI's turn, getting best move..." << std::endl;
             auto move = ai_player_->getBestMove(game_);
             if (move) {
-                std::cout << "DEBUG: AI делает ход: piece_id=" << move->piece_id << std::endl;
                 game_.makeMove(move->piece_id, move->to);
-            } else {
-                std::cout << "DEBUG: AI не смог найти подходящий ход" << std::endl;
             }
             ai_clock.restart();
         }
@@ -485,7 +480,6 @@ void GameUI::handleMouseButtonPressed(int x, int y) {
     if (piece) {
         // Проверяем, не на кулдауне ли фигура
         if (piece->cooldown_ticks_remaining > 0) {
-            std::cout << "DEBUG: Фигура на кулдауне" << std::endl;
             return;
         }
 
@@ -497,8 +491,6 @@ void GameUI::handleMouseButtonPressed(int x, int y) {
 
         // Запоминаем начальную позицию для отрисовки подсветки
         selected_piece_position_ = board_pos;
-
-        std::cout << "DEBUG: Выбрана фигура ID " << piece->id << std::endl;
     }
 }
 
@@ -514,7 +506,6 @@ void GameUI::handleMouseButtonReleased(int x, int y) {
     if (target.row != -1) {
         // Пытаемся сделать ход
         bool success = game_.makeMove(selected_piece_id_.value(), target);
-        std::cout << "DEBUG: Попытка хода " << (success ? "успешна" : "не удалась") << std::endl;
     }
 
     // Сбрасываем перетаскивание

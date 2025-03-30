@@ -7,15 +7,13 @@
 #include <functional>
 
 int main() {
-    // Настройки по умолчанию
     GameSettings settings;
-    settings.tick_rate_ms = 100; // Устанавливаем стандартный тик в 100мс (0.1 секунды)
+    settings.tick_rate_ms = 100;
     settings.against_ai = false;
     settings.fen_string = FENParser::getDefaultFEN();
 
     AIDifficulty ai_difficulty = AIDifficulty::MEDIUM;
 
-    // Ввод режима игры
     std::cout << "Select game mode:" << std::endl;
     std::cout << "1. Human vs Human" << std::endl;
     std::cout << "2. Human vs AI" << std::endl;
@@ -45,11 +43,9 @@ int main() {
         }
     }
 
-    // Ввод кулдаунов в секундах (вместо тиков)
     double white_cooldown_seconds;
     std::cout << "\nEnter cooldown for White pieces (in seconds): ";
     std::cin >> white_cooldown_seconds;
-    // Конвертируем секунды в тики (1 тик = 0.1 сек)
     settings.white_cooldown_ticks = static_cast<int>(white_cooldown_seconds * 10);
 
     double black_cooldown_seconds;
@@ -57,7 +53,6 @@ int main() {
     std::cin >> black_cooldown_seconds;
     settings.black_cooldown_ticks = static_cast<int>(black_cooldown_seconds * 10);
 
-    // Ввод начальной позиции
     std::cout << "\nSelect initial position:" << std::endl;
     std::cout << "1. Standard chess position" << std::endl;
     std::cout << "2. Custom position (FEN notation)" << std::endl;
@@ -68,7 +63,7 @@ int main() {
 
     if (position_choice == 2) {
         std::cout << "\nEnter FEN notation (or 'standard' for default position): ";
-        std::cin.ignore(); // Очищаем буфер ввода
+        std::cin.ignore();
         std::string fen;
         std::getline(std::cin, fen);
 
@@ -80,9 +75,7 @@ int main() {
         }
     }
 
-    // Создание и настройка игры
     Game game([](GameState state) {
-        // Callback для обработки изменения состояния игры
         if (state == GameState::WHITE_WIN) {
             std::cout << "Game over - White wins!" << std::endl;
         } else if (state == GameState::BLACK_WIN) {
@@ -90,11 +83,9 @@ int main() {
         }
     });
 
-    // Применяем настройки и запускаем игру
     game.applySettings(settings);
     game.start();
 
-    // Создание и запуск UI
     GameUI ui(game, settings.against_ai);
     ui.run();
 

@@ -3,11 +3,9 @@
 #include <algorithm>
 
 bool FENParser::isValidFEN(const std::string& fen) {
-    // Разбор первой части FEN (расстановка фигур)
     std::string::size_type pos = fen.find(' ');
     std::string board_part = (pos != std::string::npos) ? fen.substr(0, pos) : fen;
 
-    // Проверка корректности доски
     return validateBoardPart(board_part);
 }
 
@@ -17,12 +15,10 @@ std::string FENParser::getDefaultFEN() {
 
 std::string FENParser::boardToFEN(const Board& board) {
     std::stringstream fen;
-    auto pieces = board.getAllPieces(false); // Без захваченных фигур
+    auto pieces = board.getAllPieces(false);
 
-    // Создаем пустую доску 8x8
     char board_array[8][8] = {0};
 
-    // Заполняем доску фигурами
     for (const auto& piece : pieces) {
         if (piece.position.row < 0 || piece.position.row > 7 ||
             piece.position.col < 0 || piece.position.col > 7) {
@@ -41,7 +37,6 @@ std::string FENParser::boardToFEN(const Board& board) {
             default: continue;
         }
 
-        // Для белых фигур используем заглавные буквы
         if (piece.color == PlayerColor::WHITE) {
             piece_char = toupper(piece_char);
         }
@@ -49,7 +44,6 @@ std::string FENParser::boardToFEN(const Board& board) {
         board_array[piece.position.row][piece.position.col] = piece_char;
     }
 
-    // Строим FEN
     for (int row = 7; row >= 0; row--) {
         int empty_count = 0;
 
@@ -82,7 +76,6 @@ bool FENParser::parseFEN(const std::string& fen, Board& board) {
 }
 
 bool FENParser::validateBoardPart(const std::string& board_part) {
-    // Разбиваем на ряды по '/'
     int row = 7;
     int col = 0;
     int white_kings = 0;
@@ -90,27 +83,27 @@ bool FENParser::validateBoardPart(const std::string& board_part) {
 
     for (char ch : board_part) {
         if (ch == '/') {
-            if (col != 8) return false; // Неправильная длина ряда
+            if (col != 8) return false;
 
             row--;
             col = 0;
-            if (row < 0) return false; // Слишком много строк
+            if (row < 0) return false;
         }
         else if (isdigit(ch)) {
             col += (ch - '0');
-            if (col > 8) return false; // Строка слишком длинная
+            if (col > 8) return false;
         }
         else {
-            if (col >= 8) return false; // Строка слишком длинная
+            if (col >= 8) return false;
 
             switch (ch) {
                 case 'K': white_kings++; break;
                 case 'k': black_kings++; break;
-                case 'P': case 'N': case 'B': case 'R': case 'Q': // Белые фигуры
-                case 'p': case 'n': case 'b': case 'r': case 'q': // Черные фигуры
+                case 'P': case 'N': case 'B': case 'R': case 'Q':
+                case 'p': case 'n': case 'b': case 'r': case 'q':
                     break;
                 default:
-                    return false; // Недопустимый символ
+                    return false;
             }
 
             col++;

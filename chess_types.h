@@ -4,7 +4,6 @@
 #include <optional>
 #include <string>
 
-// Позиция на доске
 struct Position {
     int row;
     int col;
@@ -18,13 +17,11 @@ struct Position {
     }
 };
 
-// Цвет игрока
 enum class PlayerColor {
     WHITE,
     BLACK
 };
 
-// Тип фигуры
 enum class PieceType {
     PAWN,
     KNIGHT,
@@ -34,7 +31,6 @@ enum class PieceType {
     KING
 };
 
-// Состояние игры
 enum class GameState {
     NOT_STARTED,
     WAITING_FOR_SETTINGS,
@@ -44,7 +40,6 @@ enum class GameState {
     BLACK_WIN
 };
 
-// Сложность ИИ
 enum class AIDifficulty {
     EASY,
     MEDIUM,
@@ -52,7 +47,6 @@ enum class AIDifficulty {
     EXPERT
 };
 
-// Шахматная фигура
 struct Piece {
     uint32_t id;
     PieceType type;
@@ -63,7 +57,6 @@ struct Piece {
     int cooldown_ticks_remaining;
 };
 
-// Ход фигуры
 struct Move {
     uint32_t piece_id;
     Position from;
@@ -71,7 +64,6 @@ struct Move {
     uint64_t timestamp;
 };
 
-// Настройки игры
 struct GameSettings {
     int white_cooldown_ticks;
     int black_cooldown_ticks;
