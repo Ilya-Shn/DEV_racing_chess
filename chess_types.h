@@ -69,5 +69,6 @@ struct GameSettings {
     int black_cooldown_ticks;
     int tick_rate_ms;
     bool against_ai;
+    std::optional<AIDifficulty> ai_difficulty;
     std::string fen_string;
 };

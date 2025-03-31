@@ -20,8 +20,6 @@ private:
     AIDifficulty difficulty_;
     PlayerColor color_;
     std::mt19937 rng_;
-    int ticks_per_move_;
-    int ticks_counter_;
     int move_randomness_;
 
     struct MoveScore {

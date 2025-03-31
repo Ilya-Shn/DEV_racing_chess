@@ -10,7 +10,7 @@ enum class UIState {
 
 class GameUI {
 public:
-    GameUI(Game& game, bool against_ai = false, unsigned width = 800, unsigned height = 600);
+    GameUI(Game& game, GameSettings settings, unsigned width = 800, unsigned height = 600);
     void run();
 
 private:

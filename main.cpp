@@ -12,7 +12,6 @@ int main() {
     settings.against_ai = false;
     settings.fen_string = FENParser::getDefaultFEN();
 
-    AIDifficulty ai_difficulty = AIDifficulty::MEDIUM;
 
     std::cout << "Select game mode:" << std::endl;
     std::cout << "1. Human vs Human" << std::endl;
@@ -35,11 +34,11 @@ int main() {
         std::cin >> difficulty;
 
         switch (difficulty) {
-            case 1: ai_difficulty = AIDifficulty::EASY; break;
-            case 2: ai_difficulty = AIDifficulty::MEDIUM; break;
-            case 3: ai_difficulty = AIDifficulty::HARD; break;
-            case 4: ai_difficulty = AIDifficulty::EXPERT; break;
-            default: ai_difficulty = AIDifficulty::MEDIUM; break;
+            case 1: settings.ai_difficulty = AIDifficulty::EASY; break;
+            case 2: settings.ai_difficulty = AIDifficulty::MEDIUM; break;
+            case 3: settings.ai_difficulty = AIDifficulty::HARD; break;
+            case 4: settings.ai_difficulty = AIDifficulty::EXPERT; break;
+            default: settings.ai_difficulty = AIDifficulty::MEDIUM; break;
         }
     }
 
@@ -86,7 +85,7 @@ int main() {
     game.applySettings(settings);
     game.start();
 
-    GameUI ui(game, settings.against_ai);
+    GameUI ui(game, settings);
     ui.run();
 
     return 0;
