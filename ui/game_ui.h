@@ -1,7 +1,7 @@
 #pragma once
 #include <SFML/Graphics.hpp>
-#include "game.h"
-#include "ai_player.h"
+#include "../core/game.h"
+#include "../bot/ai_player.h"
 
 enum class UIState {
     GAME_ACTIVE,

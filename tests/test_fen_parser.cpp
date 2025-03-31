@@ -1,6 +1,6 @@
 #include <gtest/gtest.h>
-#include "../fen_parser.h"
-#include "../board.h"
+#include "../utility/fen_parser.h"
+#include "../core/board.h"
 
 TEST(FenParserTest, ValidFENStrings) {
     

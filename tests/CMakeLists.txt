@@ -1,10 +1,10 @@
 add_library(SpeedChessLib STATIC
-        ${CMAKE_SOURCE_DIR}/game.cpp
-        ${CMAKE_SOURCE_DIR}/board.cpp
-        ${CMAKE_SOURCE_DIR}/move_validator.cpp
-        ${CMAKE_SOURCE_DIR}/ai_player.cpp
-        ${CMAKE_SOURCE_DIR}/timer.cpp
-        ${CMAKE_SOURCE_DIR}/fen_parser.cpp
+        ${CMAKE_SOURCE_DIR}/core/game.cpp
+        ${CMAKE_SOURCE_DIR}/core/board.cpp
+        ${CMAKE_SOURCE_DIR}/core/move_validator.cpp
+        ${CMAKE_SOURCE_DIR}/bot/ai_player.cpp
+        ${CMAKE_SOURCE_DIR}/utility/timer.cpp
+        ${CMAKE_SOURCE_DIR}/utility/fen_parser.cpp
 )
 
 set(TEST_FILES

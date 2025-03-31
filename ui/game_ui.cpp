@@ -1,5 +1,5 @@
 #include "game_ui.h"
-#include "fen_parser.h"
+#include "../utility/fen_parser.h"
 #include <iostream>
 #include <cmath>
 #include <sstream>

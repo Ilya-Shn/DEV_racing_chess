@@ -1,7 +1,7 @@
 #include <gtest/gtest.h>
-#include "../ai_player.h"
-#include "../game.h"
-#include "../fen_parser.h"
+#include "../bot/ai_player.h"
+#include "../core/game.h"
+#include "../utility/fen_parser.h"
 
 class AIPlayerTest : public ::testing::Test {
 protected:

@@ -1,7 +1,7 @@
 #pragma once
 #include "board.h"
 #include "move_validator.h"
-#include "timer.h"
+#include "../utility/timer.h"
 #include <functional>
 
 class Game {

@@ -1,6 +1,6 @@
 #include <gtest/gtest.h>
-#include "../move_validator.h"
-#include "../board.h"
+#include "../core/move_validator.h"
+#include "../core/board.h"
 
 class MoveValidatorTest : public ::testing::Test {
 protected:

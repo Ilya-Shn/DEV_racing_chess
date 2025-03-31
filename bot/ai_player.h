@@ -1,7 +1,7 @@
 #pragma once
 
-#include "chess_types.h"
-#include "game.h"
+#include "../core/chess_types.h"
+#include "../core/game.h"
 #include <vector>
 #include <optional>
 #include <random>

@@ -1,7 +1,7 @@
-#include "game.h"
-#include "game_ui.h"
-#include "fen_parser.h"
-#include "ai_player.h"
+#include "core/game.h"
+#include "ui/game_ui.h"
+#include "utility/fen_parser.h"
+#include "bot/ai_player.h"
 #include <iostream>
 #include <string>
 #include <functional>

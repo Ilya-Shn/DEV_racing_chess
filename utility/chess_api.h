@@ -1,7 +1,7 @@
 #pragma once
 
-#include "game.h"
-#include "ai_player.h"
+#include "../core/game.h"
+#include "../bot/ai_player.h"
 #include "fen_parser.h"
 #include <string>
 #include <optional>

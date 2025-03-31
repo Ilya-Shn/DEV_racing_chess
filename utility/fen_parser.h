@@ -1,6 +1,6 @@
 #pragma once
 #include <string>
-#include "board.h"
+#include "../core/board.h"
 
 class FENParser {
 public:

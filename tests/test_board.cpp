@@ -1,6 +1,6 @@
 #include <gtest/gtest.h>
-#include "../board.h"
-#include "../fen_parser.h"
+#include "../core/board.h"
+#include "../utility/fen_parser.h"
 
 class BoardTest : public ::testing::Test {
 protected:

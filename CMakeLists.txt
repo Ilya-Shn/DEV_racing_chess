@@ -17,24 +17,24 @@ enable_testing()
 
 set(SOURCES
         main.cpp
-        game.cpp
-        board.cpp
-        move_validator.cpp
-        ai_player.cpp
-        timer.cpp
-        fen_parser.cpp
-        game_ui.cpp
+        core/game.cpp
+        core/board.cpp
+        core/move_validator.cpp
+        bot/ai_player.cpp
+        utility/timer.cpp
+        utility/fen_parser.cpp
+        ui/game_ui.cpp
 )
 
 set(HEADERS
-        game.h
-        board.h
-        move_validator.h
-        ai_player.h
-        timer.h
-        fen_parser.h
-        game_ui.h
-        chess_types.h
+        core/game.h
+        core/board.h
+        core/move_validator.h
+        bot/ai_player.h
+        utility/timer.h
+        utility/fen_parser.h
+        ui/game_ui.h
+        core/chess_types.h
 )
 
 add_executable(SpeedChess ${SOURCES} ${HEADERS})
