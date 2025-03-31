@@ -16,30 +16,25 @@ ChessAPI::ChessAPI(bool against_ai, AIDifficulty difficulty,
     settings.tick_rate_ms = 100;
     settings.fen_string = fen.empty() ? FENParser::getDefaultFEN() : fen;
 
-    // Инициализируем игру с настройками
     game_.applySettings(settings);
     game_.start();
 
-    // Создаем ИИ, если нужно
     if (against_ai) {
         ai_player_ = std::make_unique<AIPlayer>(difficulty, PlayerColor::BLACK);
     }
 }
 
 bool ChessAPI::makeMove(int fromRow, int fromCol, int toRow, int toCol) {
-    // Проверяем, что координаты в пределах доски
     if (fromRow < 0 || fromRow > 7 || fromCol < 0 || fromCol > 7 ||
         toRow < 0 || toRow > 7 || toCol < 0 || toCol > 7) {
         return false;
     }
 
-    // Находим фигуру на исходной позиции
     auto piece = game_.getBoard().getPieceAt({fromRow, fromCol});
     if (!piece) {
         return false;
     }
 
-    // Пробуем сделать ход
     return game_.makeMove(piece->id, {toRow, toCol});
 }
 

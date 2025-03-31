@@ -12,6 +12,9 @@ endif()
 
 find_package(SFML 2.5 COMPONENTS system window graphics REQUIRED)
 
+find_package(GTest REQUIRED)
+enable_testing()
+
 set(SOURCES
         main.cpp
         game.cpp
@@ -39,6 +42,13 @@ add_executable(SpeedChess ${SOURCES} ${HEADERS})
 target_link_libraries(SpeedChess PRIVATE sfml-system sfml-window sfml-graphics)
 
 file(COPY ${CMAKE_CURRENT_SOURCE_DIR}/data DESTINATION ${CMAKE_CURRENT_BINARY_DIR})
+
+enable_testing()
+add_subdirectory(tests)
+
+file(COPY ${CMAKE_CURRENT_SOURCE_DIR}/data DESTINATION ${CMAKE_CURRENT_BINARY_DIR})
+
+
 
 install(TARGETS SpeedChess DESTINATION bin)
 install(DIRECTORY data DESTINATION bin)
